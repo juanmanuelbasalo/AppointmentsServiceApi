@@ -21,7 +21,7 @@ namespace ApiGateway.Model
             Uri = uri;
             RequiresAuthentication = requiresAuthentication;
         }
-        private Destination()
+        public Destination()
         {
         }
 

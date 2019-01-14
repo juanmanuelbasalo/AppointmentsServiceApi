@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiGateway.Helpers;
+using ApiGateway.Middleware;
 using ApiGateway.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiGateway
@@ -14,8 +17,16 @@ namespace ApiGateway
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.Configure<ListRoutes>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,12 +36,8 @@ namespace ApiGateway
             {
                 app.UseDeveloperExceptionPage();
             }
-            Router router = new Router(@"C:\Users\JB_28\source\repos\ServicioDeCitasAPI\ApiGateway\routes.json");
-            app.Run(async (context) =>
-            {
-                var content = await router.RouteRequest(context.Request);
-                await context.Response.WriteAsync(await content.Content.ReadAsStringAsync());
-            });
+
+            app.RoutinMiddleware();
         }
     }
 }

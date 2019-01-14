@@ -2,6 +2,7 @@
 
 namespace ServicioDeCitasUnitTest
 {
+    [TestFixture]
     public class ServicioDeCitasApiTest
     {
         [SetUp]
@@ -12,7 +13,7 @@ namespace ServicioDeCitasUnitTest
         [Test]
         public void Test1()
         {
-            Assert.Pass();
+            
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ApiGateway.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,14 @@ namespace ApiGateway.Model
     {
         public List<Route> Routes { get; set; }
         public Destination AuthenticationService { get; set; }
-        public Router(string routeConfigFilePath)
+
+        public Router(IOptions<ListRoutes> myConfig)
         {
-            dynamic router = routeConfigFilePath.LoadJsonFromFile<dynamic>();
-            string routeString = Convert.ToString(router.routes);
-            Routes = routeString.Deserialize<List<Route>>();
-            AuthenticationService = ((string)Convert.ToString(router.authenticationService)).Deserialize<Destination>();
+            Routes = myConfig.Value.Routes;
+            AuthenticationService = myConfig.Value.AuthenticationService;
         }
 
-        public async Task<HttpResponseMessage> RouteRequest(HttpRequest request)
+        public async Task<HttpResponseMessage> RouteRequestAsync(HttpRequest request)
         {
             string path = request.Path.ToString();
             string basePath = '/' + path.Split('/')[1];
