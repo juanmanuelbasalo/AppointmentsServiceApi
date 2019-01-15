@@ -4,8 +4,8 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "http://localhost:55126",
-      "sslPort": 44306
+      "applicationUrl": "http://localhost:55796",
+      "sslPort": 44340
     }
   },
   "profiles": {
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ServicioDeCitasAPI": {
+    "AuthAPI": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",
