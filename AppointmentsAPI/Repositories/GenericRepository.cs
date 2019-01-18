@@ -1,0 +1,28 @@
+﻿using AppointmentsAPI.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+namespace AppointmentsAPI.Repositories
+{
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
+    {
+        private readonly AppointmentsDbContext context;
+        private DbSet<TEntity> entities;
+        public GenericRepository(AppointmentsDbContext context) => this.context = context;
+
+        private DbSet<TEntity> Entities => entities ?? (entities = context.Set<TEntity>());
+
+        public void Delete(TEntity entity) => Entities.Remove(entity);
+        public TEntity Get(int id) => Entities.FirstOrDefault(entity => entity.Id == id);
+        public IQueryable<TEntity> GetAll() => Entities;
+        public void Insert(TEntity entity) => Entities.Add(entity);
+        public TEntity Find(Expression<Func<TEntity,bool>> searchTerm) => Entities.FirstOrDefault(searchTerm);
+        
+        public bool Save() => context.SaveChanges() >= 0;
+        public void Update(TEntity entity) => context.Update(entity);
+    }
+}
