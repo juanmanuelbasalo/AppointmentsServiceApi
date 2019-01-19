@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppointmentsAPI.Entities
 {
-    public class BaseEntity
+    public abstract class BaseEntity 
     {
-        public int Id { get; set; }
+        public abstract int Id { get; set; }
     }
 }

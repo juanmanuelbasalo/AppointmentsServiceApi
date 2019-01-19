@@ -3,7 +3,7 @@
 namespace ServicioDeCitasUnitTest
 {
     [TestFixture]
-    public class ServicioDeCitasApiTest
+    public class AppointmentsApiTest
     {
         [SetUp]
         public void Setup()

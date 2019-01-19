@@ -9,5 +9,10 @@ namespace AppointmentsAPI.Entities
     public class AppointmentsDbContext : DbContext
     {
         public AppointmentsDbContext(DbContextOptions<AppointmentsDbContext> options) : base(options) { }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>();
+        }
     }
 }

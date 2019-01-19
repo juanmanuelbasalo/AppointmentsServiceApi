@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using AppointmentsAPI.Dtos;
 
 namespace AppointmentsAPI
 {
@@ -49,6 +50,9 @@ namespace AppointmentsAPI
             }
 
             app.UseHttpsRedirection();
+
+            AutoMapper.Mapper.Initialize((map) => map.CreateMap<User, UserDto>().ReverseMap());
+
             app.UseMvc();
         }
     }
