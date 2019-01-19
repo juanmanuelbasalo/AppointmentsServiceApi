@@ -1,4 +1,5 @@
-﻿using AppointmentsAPI.Entities;
+﻿using AppointmentsAPI.Dtos;
+using AppointmentsAPI.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace AppointmentsAPI.Services
 {
-    interface IUserService
+    public interface IUserService
     {
-        IQueryable GetAllUSers();
-        User GetUser(int id);
+        IEnumerable<UserDto> GetAllUSers();
+        UserDto GetUser(int id);
         void InsertUser(User entity);
         void DeleteUser(User entity);
         void UpdateUser(User entity);
-        User FindUser(Expression<Func<User, bool>> searchTerm);
+        UserDto FindUser(Expression<Func<User, bool>> searchTerm);
         bool SaveUser();
     }
 }

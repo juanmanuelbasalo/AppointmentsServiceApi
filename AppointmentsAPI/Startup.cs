@@ -33,6 +33,7 @@ namespace AppointmentsAPI
             services.AddOptions();
             services.AddCustomDbContext(Configuration);
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScopedCustomServices();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppointmentsAPI.Dtos;
 using AppointmentsAPI.Entities;
 using AppointmentsAPI.Repositories;
+using AppointmentsAPI.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,18 +15,17 @@ namespace AppointmentsAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        readonly IGenericRepository<User> repository;
-        public UserController(IGenericRepository<User> repository)
+        readonly IUserService service;
+        public UserController(IUserService service)
         {
-            this.repository = repository;
+            this.service = service;
         }
 
         // GET api/user
         [HttpGet]
         public ActionResult Get()
         {
-            var users = repository.GetAll().ToList();
-            var usersDto = Mapper.Map<List<UserDto>>(users);
+            var usersDto = service.GetAllUSers();
 
             return Ok(usersDto);
         }
@@ -34,9 +34,13 @@ namespace AppointmentsAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            var user = repository.Get(id);
-            var userDto = Mapper.Map<UserDto>(user);
+            var userDto = service.GetUser(id);
 
+            if (userDto == null)
+            {
+                return NotFound();
+            }
+            
             return Ok(userDto);
         }
 
