@@ -12,10 +12,9 @@ namespace AppointmentsAPI.Services
     {
         IEnumerable<UserDto> GetAllUSers();
         UserDto GetUser(int id);
-        void InsertUser(User entity);
-        void DeleteUser(User entity);
-        void UpdateUser(User entity);
-        UserDto FindUser(Expression<Func<User, bool>> searchTerm);
-        bool SaveUser();
+        Task<UserDto> InsertUser(UserDto entity);
+        Task<UserDto> UpdateUserAsync(UserDto userDto);
+        void DeleteUser(UserDto entity);
+        UserDto FindUser(Expression<Func<UserDto, bool>> searchTerm);
     }
 }

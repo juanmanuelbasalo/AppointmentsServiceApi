@@ -17,6 +17,7 @@ namespace AppointmentsAPI.ExtensionMethods
             return service.AddDbContext<AppointmentsDbContext>((options) => 
             {
                 options.UseMySql(configuration.GetConnectionString("DefaultConnection"));
+                options.EnableSensitiveDataLogging();
             });
         }
         public static IServiceCollection AddScopedCustomServices(this IServiceCollection service)

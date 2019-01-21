@@ -1,4 +1,5 @@
 ﻿using AppointmentsAPI.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,6 @@ namespace AppointmentsAPI.Repositories
         void Delete(TEntity entity);
         void Update(TEntity entity);
         TEntity Find(Expression<Func<TEntity,bool>> searchTerm);
-        bool Save();
+        Task<bool> SaveAsync();
     }
 }

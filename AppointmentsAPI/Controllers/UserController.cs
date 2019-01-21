@@ -31,7 +31,7 @@ namespace AppointmentsAPI.Controllers
         }
 
         // GET api/user/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetSingleUser")]
         public ActionResult Get(int id)
         {
             var userDto = service.GetUser(id);
@@ -44,16 +44,41 @@ namespace AppointmentsAPI.Controllers
             return Ok(userDto);
         }
 
-        // POST api/values
+        // POST api/user
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] UserDto userDto)
         {
+            var resultDto = await service.InsertUser(userDto);
+
+            if (resultDto == null)
+            {
+                return new StatusCodeResult(500);
+            }
+
+            return CreatedAtRoute("GetSingleUser", new { resultDto.Id }, resultDto);
         }
 
-        // PUT api/values/5
+        // PUT api/user/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put(int id, [FromBody] UserUpdateDto userDto)
         {
+            var existingUser = service.GetUser(id);
+
+            if(existingUser == null)
+            {
+                return NotFound();
+            }
+
+            Mapper.Map(userDto, existingUser);
+
+            var updatedUser = await service.UpdateUserAsync(existingUser);
+
+            if(updatedUser == null)
+            {
+                return new StatusCodeResult(500);
+            }
+
+            return Ok(updatedUser);
         }
 
         // DELETE api/values/5

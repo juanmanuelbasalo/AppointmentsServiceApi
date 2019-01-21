@@ -52,7 +52,11 @@ namespace AppointmentsAPI
 
             app.UseHttpsRedirection();
 
-            AutoMapper.Mapper.Initialize((map) => map.CreateMap<User, UserDto>().ReverseMap());
+            AutoMapper.Mapper.Initialize((map) => 
+            {
+                map.CreateMap<User, UserDto>().ReverseMap();
+                map.CreateMap<UserDto, UserUpdateDto>().ReverseMap();
+            });
 
             app.UseMvc();
         }

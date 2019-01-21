@@ -15,12 +15,12 @@ namespace AppointmentsAPI.Services
         private readonly IGenericRepository<User> repository;
         public UserService(IGenericRepository<User> repository) => this.repository = repository;
 
-        public void DeleteUser(User entity)
+        public void DeleteUser(UserDto entity)
         {
             throw new NotImplementedException();
         }
 
-        public UserDto FindUser(Expression<Func<User, bool>> searchTerm)
+        public UserDto FindUser(Expression<Func<UserDto, bool>> searchTerm)
         {
             throw new NotImplementedException();
         }
@@ -39,19 +39,30 @@ namespace AppointmentsAPI.Services
             return userDto;
         }
 
-        public void InsertUser(User entity)
+        public async Task<UserDto> InsertUser(UserDto entity)
         {
-            throw new NotImplementedException();
+            var user = Mapper.Map<User>(entity);
+            repository.Insert(user);
+
+            var result = await repository.SaveAsync();
+
+            if (result)
+            {
+                var userDto = Mapper.Map<UserDto>(user);
+                return userDto;
+            }
+
+            return null;
         }
 
-        public bool SaveUser()
+        public async Task<UserDto> UpdateUserAsync(UserDto userDto)
         {
-            throw new NotImplementedException();
-        }
+            var user = Mapper.Map<User>(userDto);
 
-        public void UpdateUser(User entity)
-        {
-            throw new NotImplementedException();
+            repository.Update(user);
+            var result = await repository.SaveAsync();
+
+            return result ? userDto : null;
         }
     }
 }
