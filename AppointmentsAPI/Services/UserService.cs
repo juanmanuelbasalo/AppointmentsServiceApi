@@ -2,6 +2,7 @@
 using AppointmentsAPI.Entities;
 using AppointmentsAPI.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,12 @@ namespace AppointmentsAPI.Services
         private readonly IGenericRepository<User> repository;
         public UserService(IGenericRepository<User> repository) => this.repository = repository;
 
-        public void DeleteUser(UserDto entity)
+        public async Task<bool> DeleteUser(UserDto entity)
         {
-            throw new NotImplementedException();
+            var user = Mapper.Map<User>(entity);
+            repository.Delete(user);
+
+            return await repository.SaveAsync();
         }
 
         public UserDto FindUser(Expression<Func<UserDto, bool>> searchTerm)
@@ -53,6 +57,18 @@ namespace AppointmentsAPI.Services
             }
 
             return null;
+        }
+
+        public async Task<UserDto> PatchUser(JsonPatchDocument<UserUpdateDto> updateInfo, UserDto userToUpdate)
+        {
+            var userToPatch = Mapper.Map<UserUpdateDto>(userToUpdate);
+            updateInfo.ApplyTo(userToPatch);
+
+            Mapper.Map(userToPatch, userToUpdate);
+
+            var updatedUser = await UpdateUserAsync(userToUpdate);
+
+            return updatedUser;
         }
 
         public async Task<UserDto> UpdateUserAsync(UserDto userDto)

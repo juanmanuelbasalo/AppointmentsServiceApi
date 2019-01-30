@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServicioDeCitasUnitTest
 {
@@ -17,8 +18,9 @@ namespace ServicioDeCitasUnitTest
         public void Setup()
         {
             AutoMapper.Mapper.Initialize((map) => map.CreateMap<User, UserDto>().ReverseMap());
-        }  
-        
+        }
+
+        #region Get Methods
         [Test]
         public void GetAllUsers_AllUsers_ReturnAllUsers()
         {
@@ -45,7 +47,6 @@ namespace ServicioDeCitasUnitTest
 
             mock.VerifyAll();
         }
-
         [TestCase(1)]
         public void GetUser_UserBasedOnId_ReturnCorrectUser(int id)
         {
@@ -60,5 +61,43 @@ namespace ServicioDeCitasUnitTest
 
             mock.VerifyAll();
         }
+        #endregion
+        #region Insert Methods
+        [Test]
+        public async Task InsertUser_InsertUserDto_ReturnSameUserAsInserted()
+        {
+            var expectedUser = new User { Id = 1, Name = "Juan", LastName = "Basalo", UserName = "juanBasalo", Password = "12345" };
+            var mock = new Mock<IGenericRepository<User>>(MockBehavior.Loose);
+            mock.Setup(p => p.SaveAsync()).Returns(Task.FromResult(true));
+            mock.Setup(p => p.Insert(expectedUser));
+
+            var userDto = AutoMapper.Mapper.Map<UserDto>(expectedUser);
+            var service = new UserService(mock.Object);
+            var result = await service.InsertUser(userDto);
+
+            Assert.IsTrue((expectedUser.Id == result.Id) && (expectedUser.Name.Equals(result.Name) && (expectedUser.Password.Equals(result.Password))));
+
+            mock.Verify();
+        }
+        [Test]
+        public async Task InsertUser_InsertUserNull_ReturnNull()
+        {
+            var expectedUser = new User { Id = 1, Name = "Juan", LastName = "Basalo", UserName = "juanBasalo", Password = "12345" };
+            var mock = new Mock<IGenericRepository<User>>(MockBehavior.Loose);
+            mock.Setup(p => p.SaveAsync()).Returns(Task.FromResult(false));
+            mock.Setup(p => p.Insert(expectedUser));
+
+            var userDto = AutoMapper.Mapper.Map<UserDto>(expectedUser);
+            var service = new UserService(mock.Object);
+            var result = await service.InsertUser(userDto);
+
+            Assert.IsNull(result);
+            mock.Verify();
+        }
+        #endregion
+        #region Update Methods
+        #endregion
+        #region Delete Methods
+        #endregion
     }
 }
