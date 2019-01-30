@@ -36,7 +36,7 @@ namespace AppointmentsAPI.Services
             return userDto;
         }
 
-        public UserDto GetUser(int id)
+        public UserDto GetUser(Guid id)
         {
             var user = repository.Get(id);
             var userDto = Mapper.Map<UserDto>(user);

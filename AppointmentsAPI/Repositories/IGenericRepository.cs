@@ -11,7 +11,7 @@ namespace AppointmentsAPI.Repositories
     public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     {
         IQueryable<TEntity> GetAll();
-        TEntity Get(int id);
+        TEntity Get(Guid id);
         void Insert(TEntity entity);
         void Delete(TEntity entity);
         void Update(TEntity entity);

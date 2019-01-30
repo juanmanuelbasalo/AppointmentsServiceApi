@@ -17,7 +17,7 @@ namespace AppointmentsAPI.Repositories
         private DbSet<TEntity> Entities => entities ?? (entities = context.Set<TEntity>());
 
         public void Delete(TEntity entity) => Entities.Remove(entity);
-        public TEntity Get(int id) => Entities.AsNoTracking().FirstOrDefault(entity => entity.Id == id);
+        public TEntity Get(Guid id) => Entities.AsNoTracking().FirstOrDefault(entity => entity.Id == id);
         public IQueryable<TEntity> GetAll() => Entities.AsNoTracking();
         public void Insert(TEntity entity) => Entities.Add(entity);
         public TEntity Find(Expression<Func<TEntity,bool>> searchTerm) => Entities.FirstOrDefault(searchTerm);

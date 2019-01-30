@@ -12,7 +12,7 @@ namespace AppointmentsAPI.Entities
     {
         [Column("userId")]
         [Key]
-        public override int Id{ get; set; }
+        public override Guid Id{ get; set; }
         [Column("username")]
         public string UserName { get; set; }
         [Column("password")]

@@ -36,7 +36,7 @@ namespace AppointmentsAPI.Controllers
         [HttpGet("{id}", Name = nameof(GetSingleUser))]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
-        public ActionResult<UserDto> GetSingleUser(int id)
+        public ActionResult<UserDto> GetSingleUser(Guid id)
         {
             var userDto = service.GetUser(id);
 
@@ -68,7 +68,7 @@ namespace AppointmentsAPI.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<UserDto>> Put(int id, [FromBody] UserUpdateDto userDto)
+        public async Task<ActionResult<UserDto>> Put(Guid id, [FromBody] UserUpdateDto userDto)
         {
             var existingUser = service.GetUser(id);
             if(existingUser == null)
@@ -92,7 +92,7 @@ namespace AppointmentsAPI.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<UserDto>> PartialUpdate(int id, [FromBody] JsonPatchDocument<UserUpdateDto> userUpdateDto)
+        public async Task<ActionResult<UserDto>> PartialUpdate(Guid id, [FromBody] JsonPatchDocument<UserUpdateDto> userUpdateDto)
         {
             if (userUpdateDto == null)
             {
@@ -119,7 +119,7 @@ namespace AppointmentsAPI.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [ProducesResponseType(204)]
-        public async Task<ActionResult> DeleteUser(int id)
+        public async Task<ActionResult> DeleteUser(Guid id)
         {
             var userDto = service.GetUser(id);
             if(userDto == null)

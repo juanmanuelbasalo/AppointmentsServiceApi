@@ -12,7 +12,7 @@ namespace AppointmentsAPI.Services
     public interface IUserService
     {
         IEnumerable<UserDto> GetAllUSers();
-        UserDto GetUser(int id);
+        UserDto GetUser(Guid id);
         Task<UserDto> InsertUser(UserDto entity);
         Task<UserDto> UpdateUserAsync(UserDto userDto);
         Task<bool> DeleteUser(UserDto entity);
