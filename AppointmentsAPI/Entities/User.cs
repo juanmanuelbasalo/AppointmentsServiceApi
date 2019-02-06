@@ -13,13 +13,15 @@ namespace AppointmentsAPI.Entities
         [Column("userId")]
         [Key]
         public override Guid Id{ get; set; }
-        [Column("username")]
-        public string UserName { get; set; }
+        [Column("email")]
+        public string Email { get; set; }
         [Column("password")]
         public string Password { get; set; }
         [Column("name")]
         public string Name { get; set; }
-        [Column("lastname")]
+        [Column("lastName")]
         public string LastName { get; set; }
+        [Column("phoneNumber")]
+        public string PhoneNumber { get; set; }
     }
 }

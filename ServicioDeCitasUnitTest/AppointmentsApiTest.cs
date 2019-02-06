@@ -29,16 +29,16 @@ namespace ServicioDeCitasUnitTest
             var id2 = Guid.NewGuid();
             var expectedResult = new List<UserDto>
             {
-                new UserDto{ Id = id1, Name = "Juan", LastName = "Basalo", Password = "12fdggf555", UserName = "jb@2345" },
-                new UserDto{ Id = id2, Name = "Pedro", LastName = "Grieta", Password = "4343rfgf676", UserName = "pedro@343" }
+                new UserDto{ Id = id1, Name = "Juan", LastName = "Basalo", Password = "12fdggf555", Email = "jb@2345", PhoneNumber = "11111" },
+                new UserDto{ Id = id2, Name = "Pedro", LastName = "Grieta", Password = "4343rfgf676", Email = "pedro@343", PhoneNumber = "11111" }
             };
 
             var mock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
             mock.Setup(p => p.GetAll()).Returns(new List<User>
             {
-                new User{ Id = id1, Name = "Juan", LastName = "Basalo", Password = "12fdggf555", UserName = "jb@2345" },
-                new User{ Id = id2, Name = "Pedro", LastName = "Grieta", Password = "4343rfgf676", UserName = "pedro@343" }
-            }.AsQueryable());
+                new User{ Id = id1, Name = "Juan", LastName = "Basalo", Password = "12fdggf555", Email = "jb@2345", PhoneNumber = "11111" },
+                new User{ Id = id2, Name = "Pedro", LastName = "Grieta", Password = "4343rfgf676", Email = "pedro@343", PhoneNumber = "11111" }
+             }.AsQueryable());
 
             var service = new UserService(mock.Object);
             var result = service.GetAllUSers().ToList();
@@ -54,7 +54,7 @@ namespace ServicioDeCitasUnitTest
         public void GetUser_UserBasedOnId_ReturnCorrectUser()
         {
             var id1 = Guid.NewGuid();
-            var expected = new User { Id = id1, Name = "Juan", LastName = "Basalo", Password = "12fdggf555", UserName = "jb@2345" };
+            var expected = new User { Id = id1, Name = "Juan", LastName = "Basalo", Password = "12fdggf555", Email = "jb@2345", PhoneNumber = "11111"};
             var mock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
             mock.Setup(p => p.Get(id1)).Returns(expected);
 
@@ -72,7 +72,7 @@ namespace ServicioDeCitasUnitTest
         {
             var id1 = Guid.NewGuid();
         
-            var expectedUser = new User { Id = id1, Name = "Juan", LastName = "Basalo", UserName = "juanBasalo", Password = "12345" };
+            var expectedUser = new User { Id = id1, Name = "Juan", LastName = "Basalo", Email = "juanBasalo", Password = "12345", PhoneNumber = "11111"};
             var mock = new Mock<IGenericRepository<User>>(MockBehavior.Loose);
             mock.Setup(p => p.SaveAsync()).Returns(Task.FromResult(true));
             mock.Setup(p => p.Insert(expectedUser));
@@ -90,7 +90,7 @@ namespace ServicioDeCitasUnitTest
         {
             var id1 = Guid.NewGuid();
             
-            var expectedUser = new User { Id = id1, Name = "Juan", LastName = "Basalo", UserName = "juanBasalo", Password = "12345" };
+            var expectedUser = new User { Id = id1, Name = "Juan", LastName = "Basalo", Email = "juanBasalo", Password = "12345", PhoneNumber = "11111"};
             var mock = new Mock<IGenericRepository<User>>(MockBehavior.Loose);
             mock.Setup(p => p.SaveAsync()).Returns(Task.FromResult(false));
             mock.Setup(p => p.Insert(expectedUser));

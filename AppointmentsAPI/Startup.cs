@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AppointmentsAPI.Dtos;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace AppointmentsAPI
 {
@@ -34,11 +35,13 @@ namespace AppointmentsAPI
             services.AddCustomDbContext(Configuration);
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScopedCustomServices();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvcContentNegotiation();
+            services.AddSwaggerGen(config => config.SwaggerDoc("AppointmentV1", new Info { Title = "Appointments Api", Version = "v1" }));
+            services.AddCustomApiVersioning();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -47,10 +50,16 @@ namespace AppointmentsAPI
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseCustomExceptionHandler(loggerFactory);
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+
+            app.UseApiVersioning();
+
+            app.UseSwagger();
+            app.UseCustomSwaggerUI();
 
             AutoMapper.Mapper.Initialize((map) => 
             {

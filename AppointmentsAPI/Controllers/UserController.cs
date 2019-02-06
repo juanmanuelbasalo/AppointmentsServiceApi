@@ -9,17 +9,21 @@ using AppointmentsAPI.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace AppointmentsAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
         readonly IUserService service;
-        public UserController(IUserService service)
+        readonly ILogger<UserController> logger;
+        public UserController(IUserService service, ILogger<UserController> logger)
         {
             this.service = service;
+            this.logger = logger;
         }
 
         // GET api/user
@@ -54,10 +58,14 @@ namespace AppointmentsAPI.Controllers
         [ProducesResponseType(201)]
         public async Task<ActionResult<UserDto>> Post([FromBody] UserDto userDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var resultDto = await service.InsertUser(userDto);
             if (resultDto == null)
             {
-                return new StatusCodeResult(500);
+                throw new Exception("Something went wrong registering the user.");
             }
 
             return CreatedAtRoute(nameof(GetSingleUser), new { resultDto.Id }, resultDto);
@@ -76,12 +84,14 @@ namespace AppointmentsAPI.Controllers
                 return NotFound();
             }
 
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             Mapper.Map(userDto, existingUser);
 
             var updatedUser = await service.UpdateUserAsync(existingUser);
             if(updatedUser == null)
             {
-                return new StatusCodeResult(500);
+                throw new Exception("Something went wrong updating the user.");
             }
 
             return updatedUser;
@@ -105,10 +115,12 @@ namespace AppointmentsAPI.Controllers
                 return NotFound();
             }
 
-            var userUpdated = await service.PatchUser(userUpdateDto, userDto);
+            var userUpdated = await service.PatchUser(userUpdateDto, userDto, this);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             if(userUpdated == null)
             {
-                return new StatusCodeResult(500);
+                throw new Exception("Something went wrong updating the user.");
             }
 
             return userUpdated;
@@ -130,7 +142,7 @@ namespace AppointmentsAPI.Controllers
             var successfulDelete = await service.DeleteUser(userDto);
             if (!successfulDelete)
             {
-                return new StatusCodeResult(500);
+                throw new Exception("Something went wrong trying to delete this user.");
             }
 
             return NoContent();

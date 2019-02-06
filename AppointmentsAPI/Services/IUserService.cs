@@ -1,6 +1,8 @@
-﻿using AppointmentsAPI.Dtos;
+﻿using AppointmentsAPI.Controllers;
+using AppointmentsAPI.Dtos;
 using AppointmentsAPI.Entities;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,7 @@ namespace AppointmentsAPI.Services
         Task<UserDto> InsertUser(UserDto entity);
         Task<UserDto> UpdateUserAsync(UserDto userDto);
         Task<bool> DeleteUser(UserDto entity);
-        UserDto FindUser(Expression<Func<UserDto, bool>> searchTerm);
-        Task<UserDto> PatchUser(JsonPatchDocument<UserUpdateDto> updateInfo, UserDto userToUpdate);
+        IEnumerable<UserDto> FindUser(Expression<Func<UserDto, bool>> searchTerm);
+        Task<UserDto> PatchUser(JsonPatchDocument<UserUpdateDto> updateInfo, UserDto userToUpdate, UserController controller);
     }
 }

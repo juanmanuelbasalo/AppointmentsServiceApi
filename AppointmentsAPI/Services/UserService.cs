@@ -1,10 +1,14 @@
-﻿using AppointmentsAPI.Dtos;
+﻿using AppointmentsAPI.Controllers;
+using AppointmentsAPI.Dtos;
 using AppointmentsAPI.Entities;
 using AppointmentsAPI.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -24,9 +28,12 @@ namespace AppointmentsAPI.Services
             return await repository.SaveAsync();
         }
 
-        public UserDto FindUser(Expression<Func<UserDto, bool>> searchTerm)
+        public IEnumerable<UserDto> FindUser(Expression<Func<UserDto, bool>> searchTerm)
         {
-            throw new NotImplementedException();
+            var searchUser = Mapper.Map<Expression<Func<User, bool>>>(searchTerm);
+            var user = repository.Find(searchUser);
+
+            return Mapper.Map<IEnumerable<UserDto>>(user);
         }
 
         public IEnumerable<UserDto> GetAllUSers()
@@ -59,10 +66,12 @@ namespace AppointmentsAPI.Services
             return null;
         }
 
-        public async Task<UserDto> PatchUser(JsonPatchDocument<UserUpdateDto> updateInfo, UserDto userToUpdate)
+        public async Task<UserDto> PatchUser(JsonPatchDocument<UserUpdateDto> updateInfo, UserDto userToUpdate, UserController controller)
         {
             var userToPatch = Mapper.Map<UserUpdateDto>(userToUpdate);
-            updateInfo.ApplyTo(userToPatch);
+            updateInfo.ApplyTo(userToPatch, controller.ModelState);
+
+            controller.TryValidateModel(userToPatch);
 
             Mapper.Map(userToPatch, userToUpdate);
 
