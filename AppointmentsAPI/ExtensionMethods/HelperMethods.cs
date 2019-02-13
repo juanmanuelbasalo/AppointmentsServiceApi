@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.Identity;
 
 namespace AppointmentsAPI.ExtensionMethods
 {
@@ -29,7 +30,10 @@ namespace AppointmentsAPI.ExtensionMethods
         }
         public static IServiceCollection AddScopedCustomServices(this IServiceCollection service)
         {
-            return service.AddScoped<IUserService, UserService>();
+            return service.AddScoped<IUserService, UserService>()
+                .AddScoped<IAppointmentService, AppointmentService>()
+                .AddScoped<IDetailsAppointmentService, DetailsAppointmentService>()
+                .AddScoped<IAppointmentsClientService, AppointmentsClientService>();
         }
         public static IMvcBuilder AddMvcContentNegotiation(this IServiceCollection mvcBuilder)
         {

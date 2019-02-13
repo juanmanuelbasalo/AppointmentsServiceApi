@@ -18,7 +18,8 @@ namespace AppointmentsAPI.Services
         Task<UserDto> InsertUser(UserDto entity);
         Task<UserDto> UpdateUserAsync(UserDto userDto);
         Task<bool> DeleteUser(UserDto entity);
-        IEnumerable<UserDto> FindUser(Expression<Func<UserDto, bool>> searchTerm);
+        UserDto FindUser(Expression<Func<User, bool>> searchTerm);
         Task<UserDto> PatchUser(JsonPatchDocument<UserUpdateDto> updateInfo, UserDto userToUpdate, UserController controller);
+        UserDto Authenticate(string email, string password);
     }
 }

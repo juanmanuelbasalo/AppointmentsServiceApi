@@ -15,7 +15,8 @@ namespace AppointmentsAPI.Repositories
         void Insert(TEntity entity);
         void Delete(TEntity entity);
         void Update(TEntity entity);
-        IEnumerable<TEntity> Find(Expression<Func<TEntity,bool>> searchTerm);
+        TEntity Find(Expression<Func<TEntity,bool>> searchTerm);
+        IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> searchTerm);
         Task<bool> SaveAsync();
     }
 }

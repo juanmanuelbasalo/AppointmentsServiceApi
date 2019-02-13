@@ -16,6 +16,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AppointmentsAPI.Dtos;
 using Swashbuckle.AspNetCore.Swagger;
+using IdentityServer4.Models;
+using IdentityServer4.Test;
+using Microsoft.AspNetCore.Identity;
 
 namespace AppointmentsAPI
 {
@@ -41,7 +44,7 @@ namespace AppointmentsAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AppointmentsDbContext dbContext)
         {
             if (env.IsDevelopment())
             {
@@ -53,7 +56,6 @@ namespace AppointmentsAPI
                 app.UseCustomExceptionHandler(loggerFactory);
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
 
             app.UseApiVersioning();
@@ -65,6 +67,10 @@ namespace AppointmentsAPI
             {
                 map.CreateMap<User, UserDto>().ReverseMap();
                 map.CreateMap<UserDto, UserUpdateDto>().ReverseMap();
+                map.CreateMap<AppointmentDto, Appointment>().ReverseMap();
+                map.CreateMap<Appointment, AppointmentInsertDto>().ReverseMap();
+                map.CreateMap<AppointmentWithDetailsDto, Appointment>().ReverseMap();
+                map.CreateMap<AppointmentWithDetailsDto, DetailsAppointments>().ReverseMap();
             });
 
             app.UseMvc();

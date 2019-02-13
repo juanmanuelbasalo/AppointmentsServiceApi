@@ -20,12 +20,13 @@ namespace AppointmentsAPI.Repositories
         public TEntity Get(Guid id) => Entities.AsNoTracking().FirstOrDefault(entity => entity.Id == id);
         public IQueryable<TEntity> GetAll() => Entities.AsNoTracking();
         public void Insert(TEntity entity) => Entities.Add(entity);
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity,bool>> searchTerm) => Entities.Where(searchTerm);
+        public TEntity Find(Expression<Func<TEntity,bool>> searchTerm) => Entities.SingleOrDefault(searchTerm);
         public void Update(TEntity entity) => context.Update(entity);
         public async Task<bool> SaveAsync()
         {
             var result = await context.SaveChangesAsync();
             return result >= 0;
         }
+        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> searchTerm) => Entities.Where(searchTerm);
     }
 }

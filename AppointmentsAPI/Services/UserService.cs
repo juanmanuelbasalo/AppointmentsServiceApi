@@ -1,6 +1,7 @@
 ﻿using AppointmentsAPI.Controllers;
 using AppointmentsAPI.Dtos;
 using AppointmentsAPI.Entities;
+using AppointmentsAPI.Helpers;
 using AppointmentsAPI.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
@@ -20,6 +21,19 @@ namespace AppointmentsAPI.Services
         private readonly IGenericRepository<User> repository;
         public UserService(IGenericRepository<User> repository) => this.repository = repository;
 
+        public UserDto Authenticate(string email, string password)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)) return null;
+
+            var userDto = FindUser(user => user.Email.Equals(email));
+
+            if (userDto == null) return userDto;
+
+            if (!SecurePasswordHasher.Verify(password, userDto.Password)) return null;
+
+            return userDto;
+        }
+
         public async Task<bool> DeleteUser(UserDto entity)
         {
             var user = Mapper.Map<User>(entity);
@@ -28,12 +42,11 @@ namespace AppointmentsAPI.Services
             return await repository.SaveAsync();
         }
 
-        public IEnumerable<UserDto> FindUser(Expression<Func<UserDto, bool>> searchTerm)
+        public UserDto FindUser(Expression<Func<User, bool>> searchTerm)
         {
-            var searchUser = Mapper.Map<Expression<Func<User, bool>>>(searchTerm);
-            var user = repository.Find(searchUser);
+            var user = repository.Find(searchTerm);
 
-            return Mapper.Map<IEnumerable<UserDto>>(user);
+            return Mapper.Map<UserDto>(user);
         }
 
         public IEnumerable<UserDto> GetAllUSers()
@@ -52,7 +65,13 @@ namespace AppointmentsAPI.Services
 
         public async Task<UserDto> InsertUser(UserDto entity)
         {
+            var userExistingEmail = FindUser(userEmail => userEmail.Email.Equals(entity.Email));
+            if (userExistingEmail != null) return null;
+
             var user = Mapper.Map<User>(entity);
+            var hashedPassword = SecurePasswordHasher.Hash(user.Password);
+            user.Password = hashedPassword;
+
             repository.Insert(user);
 
             var result = await repository.SaveAsync();

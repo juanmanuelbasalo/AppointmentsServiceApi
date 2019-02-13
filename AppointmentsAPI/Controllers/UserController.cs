@@ -56,6 +56,7 @@ namespace AppointmentsAPI.Controllers
         [HttpPost]
         [ProducesResponseType(500)]
         [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<UserDto>> Post([FromBody] UserDto userDto)
         {
             if (!ModelState.IsValid)
