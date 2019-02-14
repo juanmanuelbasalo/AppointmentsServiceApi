@@ -1,6 +1,7 @@
 ﻿using AppointmentsAPI.Dtos;
 using AppointmentsAPI.Entities;
 using AppointmentsAPI.Repositories;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,8 @@ namespace AppointmentsAPI.Services
 
         public IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId)
         {
-            //var appointments = repository.FindAll(client => client.Appointments.UserId == clientId);
-            throw new NotImplementedException();
+            var appointments = repository.FindAll(client => client.Appointment.UserId == clientId);
+            return Mapper.Map<IEnumerable<AppointmentsClientDto>>(appointments);
         }
     }
 }

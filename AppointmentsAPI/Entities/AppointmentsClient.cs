@@ -10,20 +10,22 @@ namespace AppointmentsAPI.Entities
     [Table("appointments_client")]
     public class AppointmentsClient : BaseEntity
     {
+       
+        //public Guid AppointmentsId { get; set; }
         [Column("appointmentsId")]
         [Key]
-        [ForeignKey("appointmentsId")]
-        public Guid AppointmentsId { get; set; }
+        public override Guid Id { get; set; }
+        [ForeignKey("Id")]
+        public virtual Appointment Appointment { get; set; }
 
         [Column("statusId")]
-        [ForeignKey("statusId")]
         public int StatusId { get; set; }
+        [ForeignKey("StatusId")]
+        public virtual StatusAppointments Status { get; set; }
 
         [Column("detailsId")]
-        [ForeignKey("detailsId")]
         public Guid DetailsId { get; set; }
-
-        [NotMapped]
-        public override Guid Id { get => AppointmentsId; set => AppointmentsId = value; }
+        [ForeignKey("DetailsID")]
+        public virtual DetailsAppointments Details { get; set; }
     }
 }

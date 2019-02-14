@@ -34,9 +34,9 @@ namespace AppointmentsAPI.Controllers
 
         // GET api/<controller>/5
         [HttpGet("{id}", Name = nameof(GetSingleAppointment))]
-        public ActionResult<AppointmentDto> GetSingleAppointment(int id)
+        public ActionResult<IEnumerable<AppointmentsClientDto>> GetSingleAppointment(Guid id)
         {
-            throw new NotImplementedException();
+            return appointmentsClientService.GetAllClientAppointments(id).ToList();
         }
 
         // POST api/<controller>

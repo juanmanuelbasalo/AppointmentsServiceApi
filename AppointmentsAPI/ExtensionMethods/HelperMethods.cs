@@ -24,6 +24,7 @@ namespace AppointmentsAPI.ExtensionMethods
         {
             return service.AddDbContext<AppointmentsDbContext>((options) => 
             {
+                options.UseLazyLoadingProxies();
                 options.UseMySql(configuration.GetConnectionString("DefaultConnection"));
                 options.EnableSensitiveDataLogging();
             });

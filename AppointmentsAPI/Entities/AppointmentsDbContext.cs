@@ -16,7 +16,7 @@ namespace AppointmentsAPI.Entities
             modelBuilder.Entity<User>();
             modelBuilder.Entity<Appointment>();
             modelBuilder.Entity<AppointmentsAdmin>();
-            modelBuilder.Entity<AppointmentsClient>();
+            modelBuilder.Entity<AppointmentsClient>().HasKey(k => k.Id);
             modelBuilder.Entity<DetailsAppointments>();
             modelBuilder.Entity<StatusAppointments>();
         }

@@ -16,5 +16,7 @@ namespace AppointmentsAPI.Entities
 
         [Column("status")]
         public string Status { get; set; }
+
+        public virtual ICollection<AppointmentsClient> AppointmentsClients { get; set; }
     }
 }
