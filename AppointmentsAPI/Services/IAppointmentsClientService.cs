@@ -8,7 +8,7 @@ namespace AppointmentsAPI.Services
 {
     public interface IAppointmentsClientService
     {
-        Task<bool> CreateNewAppointmentsClient(Guid AppointmentsId, int statusId, Guid detailsId);
+        Task<AppointmentsClientDto> CreateNewAppointmentsClient(AppointmentWithDetailsDto appointmentWithDetailsDto);
         IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId);
     }
 }

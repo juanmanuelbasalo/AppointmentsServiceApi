@@ -13,20 +13,5 @@ namespace AppointmentsAPI.Services
     {
         readonly IGenericRepository<DetailsAppointments> repository;
         public DetailsAppointmentService(IGenericRepository<DetailsAppointments> repository) => this.repository = repository;
-
-        public async Task<DetailsAppointmentDto> InsertNewDetails(AppointmentWithDetailsDto detailsAppointmentDto)
-        {
-            var detailsAppointment = Mapper.Map<DetailsAppointments>(detailsAppointmentDto);
-            repository.Insert(detailsAppointment);
-            var result = await repository.SaveAsync();
-
-            if (result)
-            {
-                var details = Mapper.Map<DetailsAppointmentDto>(detailsAppointment);
-                return details;
-            }
-
-            return null;
-        }
     }
 }

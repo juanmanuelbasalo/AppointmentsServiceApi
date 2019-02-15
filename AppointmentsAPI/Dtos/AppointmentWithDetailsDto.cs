@@ -9,16 +9,12 @@ namespace AppointmentsAPI.Dtos
     public class AppointmentWithDetailsDto
     {
         [Required(ErrorMessage = "Este campo es obligatorio.")]
-        [MinLength(10, ErrorMessage = "Minimo 10 caracteres.")]
-        public string Address { get; set; }
+        public InsertDetailsAppointmentDto Details { get; set; }
 
-        [Required(ErrorMessage = "Ingrese una hora.")]
-        public TimeSpan Time { get; set; }
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
+        public InsertAppointmentDto Appointment { get; set; }
 
-        [Required(ErrorMessage = "Ingrese una fecha.")]
-        public DateTime Date { get; set; }
-
-        [Required(ErrorMessage = "Ingrese el Id del usuario.")]
-        public Guid UserId { get; set; }
+        [Range(minimum:1,maximum:4, ErrorMessage = "Numero entre 1 y 4")]
+        public int StatusId { get; set; }
     }
 }

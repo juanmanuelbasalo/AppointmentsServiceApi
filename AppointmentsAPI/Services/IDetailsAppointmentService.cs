@@ -8,6 +8,5 @@ namespace AppointmentsAPI.Services
 {
     public interface IDetailsAppointmentService
     {
-        Task<DetailsAppointmentDto> InsertNewDetails(AppointmentWithDetailsDto detailsAppointmentDto);
     }
 }

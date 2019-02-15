@@ -9,5 +9,6 @@ namespace AppointmentsAPI.Dtos
     {
         public StatusAppointmentDto Status { get; set; }
         public DetailsAppointmentDto Details { get; set; }
+        public AppointmentDto Appointment { get; set; }
     }
 }

@@ -9,8 +9,6 @@ namespace AppointmentsAPI.Services
 {
     public interface IAppointmentService
     {
-        Task<AppointmentDto> CreateNewAppointment(AppointmentWithDetailsDto appointmentDto);
-        Task<bool> DeleteAppointment(AppointmentDto appointmentDto);
         Task<AppointmentDto> ChangeAppointmentDate(JsonPatchDocument<AppointmentDto> jsonPatch, AppointmentDto appointmentDto);
         Task<AppointmentDto> ChangeAppointmentTime(JsonPatchDocument<AppointmentDto> jsonPatch, AppointmentDto appointmentDto);
     }

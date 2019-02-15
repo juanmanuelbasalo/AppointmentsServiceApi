@@ -10,8 +10,6 @@ namespace AppointmentsAPI.Entities
     [Table("appointments_client")]
     public class AppointmentsClient : BaseEntity
     {
-       
-        //public Guid AppointmentsId { get; set; }
         [Column("appointmentsId")]
         [Key]
         public override Guid Id { get; set; }
@@ -25,7 +23,7 @@ namespace AppointmentsAPI.Entities
 
         [Column("detailsId")]
         public Guid DetailsId { get; set; }
-        [ForeignKey("DetailsID")]
+        [ForeignKey("DetailsId")]
         public virtual DetailsAppointments Details { get; set; }
     }
 }

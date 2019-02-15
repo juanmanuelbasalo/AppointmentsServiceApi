@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace AppointmentsAPI.Dtos
 {
-    public class DetailsAppointmentDto
+    public class InsertDetailsAppointmentDto
     {
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
+        [MinLength(10, ErrorMessage = "Minimo 10 caracteres.")]
         public string Address { get; set; }
-        public Guid Id { get; set; }
+
     }
 }

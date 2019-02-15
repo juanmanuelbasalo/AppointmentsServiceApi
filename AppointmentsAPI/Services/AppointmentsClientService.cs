@@ -14,12 +14,16 @@ namespace AppointmentsAPI.Services
         readonly IGenericRepository<AppointmentsClient> repository;
         public AppointmentsClientService(IGenericRepository<AppointmentsClient> repository) => this.repository = repository; 
        
-        public async Task<bool> CreateNewAppointmentsClient(Guid appointmentsId, int statusId, Guid detailsId)
+        public async Task<AppointmentsClientDto> CreateNewAppointmentsClient(AppointmentWithDetailsDto appointmentWithDetailsDto)
         {
-            var appointmentClient = new AppointmentsClient { AppointmentsId = appointmentsId, StatusId = statusId, DetailsId = detailsId };
+            var appointmentClient = Mapper.Map<AppointmentsClient>(appointmentWithDetailsDto);
             repository.Insert(appointmentClient);
             var result = await repository.SaveAsync();
-            return result;
+            if (result)
+            {
+                return Mapper.Map<AppointmentsClientDto>(appointmentClient);
+            }
+            return null;
         }
 
         public IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId)

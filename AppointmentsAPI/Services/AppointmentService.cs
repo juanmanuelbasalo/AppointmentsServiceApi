@@ -24,24 +24,5 @@ namespace AppointmentsAPI.Services
         {
             throw new NotImplementedException();
         }
-
-        public async Task<AppointmentDto> CreateNewAppointment(AppointmentWithDetailsDto appointmentDto)
-        {
-            var appointment = Mapper.Map<Appointment>(appointmentDto);
-            repository.Insert(appointment);
-            var result = await repository.SaveAsync();
-            if (result)
-            {
-                var entity = Mapper.Map<AppointmentDto>(appointment);
-                return entity;
-            }
-
-            return null;
-        }
-
-        public Task<bool> DeleteAppointment(AppointmentDto appointmentDto)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

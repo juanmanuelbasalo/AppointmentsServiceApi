@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace AppointmentsAPI.Dtos
 {
-    public class AppointmentDto
+    public class InsertAppointmentDto
     {
-        public Guid Id { get; set; }
-
+        [Required(ErrorMessage = "Ingrese una hora.")]
         public TimeSpan Time { get; set; }
 
+        [Required(ErrorMessage = "Ingrese una fecha.")]
         public DateTime Date { get; set; }
 
+        [Required(ErrorMessage = "Ingrese el Id del usuario.")]
         public Guid UserId { get; set; }
     }
 }

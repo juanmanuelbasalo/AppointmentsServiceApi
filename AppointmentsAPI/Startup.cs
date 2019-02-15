@@ -67,11 +67,15 @@ namespace AppointmentsAPI
             {
                 map.CreateMap<User, UserDto>().ReverseMap();
                 map.CreateMap<UserDto, UserUpdateDto>().ReverseMap();
-                map.CreateMap<AppointmentDto, Appointment>().ReverseMap();
+                map.CreateMap<InsertAppointmentDto, Appointment>().ReverseMap();
                 map.CreateMap<Appointment, AppointmentInsertDto>().ReverseMap();
                 map.CreateMap<AppointmentWithDetailsDto, Appointment>().ReverseMap();
-                map.CreateMap<AppointmentWithDetailsDto, DetailsAppointments>().ReverseMap();
+                map.CreateMap<AppointmentWithDetailsDto, InsertDetailsAppointmentDto>().ReverseMap();
                 map.CreateMap<AppointmentsClientDto, AppointmentsClient>().ReverseMap();
+                map.CreateMap<AppointmentsClient, AppointmentWithDetailsDto>().ReverseMap();
+                map.CreateMap<AppointmentWithDetailsDto, AppointmentsClient>().ReverseMap();
+                map.CreateMap<AppointmentsClient, InsertDetailsAppointmentDto>().ReverseMap();
+                map.CreateMap<InsertDetailsAppointmentDto, DetailsAppointments>().ReverseMap();
             });
 
             app.UseMvc();
