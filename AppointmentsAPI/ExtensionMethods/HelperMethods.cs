@@ -32,8 +32,6 @@ namespace AppointmentsAPI.ExtensionMethods
         public static IServiceCollection AddScopedCustomServices(this IServiceCollection service)
         {
             return service.AddScoped<IUserService, UserService>()
-                .AddScoped<IAppointmentService, AppointmentService>()
-                .AddScoped<IDetailsAppointmentService, DetailsAppointmentService>()
                 .AddScoped<IAppointmentsClientService, AppointmentsClientService>();
         }
         public static IMvcBuilder AddMvcContentNegotiation(this IServiceCollection mvcBuilder)
