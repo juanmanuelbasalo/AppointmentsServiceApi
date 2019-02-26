@@ -12,6 +12,7 @@ namespace AppointmentsAPI.Services
     public interface IAppointmentsClientService
     {
         Task<AppointmentsClientDto> CreateNewAppointmentsClientAsync(AppointmentWithDetailsDto appointmentWithDetailsDto);
+        Task DeleteAppointmentClientAsync(AppointmentsClient appointmentWithDetailsDto);
         IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId);
         AppointmentsClient GetAppointment(Guid appointmentId);
         Task<AppointmentsClientDto> PatchAppointmentClientAsync(JsonPatchDocument<AppointmentWithDetailsDto> patchAppointmentDto, AppointmentsClient appointmentsClientDto, ControllerBase controller);

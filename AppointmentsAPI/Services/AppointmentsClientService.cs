@@ -1,5 +1,6 @@
 ﻿using AppointmentsAPI.Dtos;
 using AppointmentsAPI.Entities;
+using AppointmentsAPI.Helpers;
 using AppointmentsAPI.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
@@ -28,6 +29,14 @@ namespace AppointmentsAPI.Services
             return null;
         }
 
+        public async Task DeleteAppointmentClientAsync(AppointmentsClient appointmentWithDetailsDto)
+        {
+            var appointment = Mapper.Map<AppointmentsClient>(appointmentWithDetailsDto);
+            repository.Delete(appointment);
+
+            await repository.SaveAsync();
+        }
+
         public IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId)
         {
             var appointments = repository.FindAll(client => client.Appointment.UserId == clientId);
@@ -48,7 +57,15 @@ namespace AppointmentsAPI.Services
             controller.TryValidateModel(appointmentToPatch);
 
             Mapper.Map(appointmentToPatch, appointmentsClientDto);
+
+            if (appointmentToPatch.StatusId == (int)StatusEnum.cancelled)
+            {
+                await DeleteAppointmentClientAsync(appointmentsClientDto);
+                return null;
+            }
+
             var updatedAppointment = await UpdateAppointmentClientAsync(appointmentsClientDto);
+            if (updatedAppointment == null) throw new Exception("Failed while trying to update AppointmentClient.");
 
             return updatedAppointment;
         }

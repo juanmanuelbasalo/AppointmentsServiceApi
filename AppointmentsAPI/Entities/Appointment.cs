@@ -20,5 +20,6 @@ namespace AppointmentsAPI.Entities
         [Column("userId")]
         [ForeignKey("userId")]
         public Guid UserId { get; set; }
+        public virtual AppointmentsClient AppointmentClient { get; set; }
     }
 }

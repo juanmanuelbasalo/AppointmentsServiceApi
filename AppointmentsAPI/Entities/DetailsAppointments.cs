@@ -19,5 +19,7 @@ namespace AppointmentsAPI.Entities
 
         [NotMapped]
         public override Guid Id { get => DetailsId; set => DetailsId = value; }
+
+        public virtual AppointmentsClient AppointmentClient { get; set; }
     }
 }

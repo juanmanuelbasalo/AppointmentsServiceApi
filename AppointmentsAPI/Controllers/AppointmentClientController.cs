@@ -66,6 +66,7 @@ namespace AppointmentsAPI.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
         public async Task<ActionResult<AppointmentsClientDto>> PartiallyUpdateAppointmentClient(Guid appointmentId, 
             [FromBody] JsonPatchDocument<AppointmentWithDetailsDto> patchAppointmentDto)
         {
@@ -78,7 +79,7 @@ namespace AppointmentsAPI.Controllers
                 appointmentClientDto, this);
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (updatedAppointmentClient == null) throw new Exception("Something went wrong updating the appointment.");
+            if (updatedAppointmentClient == null) return NoContent();
 
             return updatedAppointmentClient;
         }
