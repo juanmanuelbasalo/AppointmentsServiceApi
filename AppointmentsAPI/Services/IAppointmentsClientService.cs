@@ -1,5 +1,6 @@
 ﻿using AppointmentsAPI.Dtos;
 using AppointmentsAPI.Entities;
+using AppointmentsAPI.Helpers;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,7 +14,8 @@ namespace AppointmentsAPI.Services
     {
         Task<AppointmentsClientDto> CreateNewAppointmentsClientAsync(AppointmentWithDetailsDto appointmentWithDetailsDto);
         Task DeleteAppointmentClientAsync(AppointmentsClient appointmentWithDetailsDto);
-        IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId);
+        IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId, AppointmentQueryParameters appointmentParameters);
+        int CountClientAppointments(Guid clientId);
         AppointmentsClient GetAppointment(Guid appointmentId);
         Task<AppointmentsClientDto> PatchAppointmentClientAsync(JsonPatchDocument<AppointmentWithDetailsDto> patchAppointmentDto, AppointmentsClient appointmentsClientDto, ControllerBase controller);
     }

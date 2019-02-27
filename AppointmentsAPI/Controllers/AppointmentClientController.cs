@@ -7,6 +7,7 @@ using AppointmentsAPI.Helpers;
 using AppointmentsAPI.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AppointmentsAPI.Controllers
 {
@@ -27,14 +28,18 @@ namespace AppointmentsAPI.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public ActionResult<IEnumerable<AppointmentsClientDto>> GetAllAppointmentsByClient(Guid id)
+        public ActionResult<IEnumerable<AppointmentsClientDto>> GetAllAppointmentsByClient(Guid id, 
+            [FromQuery]AppointmentQueryParameters appointmentParamaters)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var allClientAppointments = appointmentsClientService.GetAllClientAppointments(id).ToList();
+            var allClientAppointments = appointmentsClientService.GetAllClientAppointments(id, appointmentParamaters).ToList();
 
             if (allClientAppointments.Count <= 0) return NotFound();
             if (allClientAppointments == null) throw new Exception("Something went wrong retrieving the client appointments.");
+
+            Response.Headers.Add("Appointment-Pagination",
+                JsonConvert.SerializeObject(new { totalCount = appointmentsClientService.CountClientAppointments(id) }));
 
             return allClientAppointments;
         }

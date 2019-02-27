@@ -15,8 +15,14 @@ namespace AppointmentsAPI.Services
     public class AppointmentsClientService : IAppointmentsClientService
     {
         readonly IGenericRepository<AppointmentsClient> repository;
-        public AppointmentsClientService(IGenericRepository<AppointmentsClient> repository) => this.repository = repository; 
-       
+        public AppointmentsClientService(IGenericRepository<AppointmentsClient> repository) => this.repository = repository;
+
+        public int CountClientAppointments(Guid clientId)
+        {
+            var appointments = repository.FindAll(client => client.Appointment.UserId == clientId);
+            return appointments.ToList().Count;
+        }
+
         public async Task<AppointmentsClientDto> CreateNewAppointmentsClientAsync(AppointmentWithDetailsDto appointmentWithDetailsDto)
         {
             var appointmentClient = Mapper.Map<AppointmentsClient>(appointmentWithDetailsDto);
@@ -37,10 +43,22 @@ namespace AppointmentsAPI.Services
             await repository.SaveAsync();
         }
 
-        public IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId)
+        public IEnumerable<AppointmentsClientDto> GetAllClientAppointments(Guid clientId, 
+            AppointmentQueryParameters appointmentParameters)
         {
             var appointments = repository.FindAll(client => client.Appointment.UserId == clientId);
-            return Mapper.Map<IEnumerable<AppointmentsClientDto>>(appointments);
+
+            if (appointmentParameters.HasQueryFilter)
+            {
+                appointments = appointments.Where(x => ((x.Appointment.Date.Day).ToString()).Equals(appointmentParameters.Filter)
+                || (x.Appointment.Time.Hours.ToString()).Equals(appointmentParameters.Filter));
+            }
+
+            var appointmentsPaging = appointments.OrderBy(i => i.Appointment.Date.Day)
+                .ThenBy(i => i.Appointment.Time)
+                .Skip(appointmentParameters.PageCount * (appointmentParameters.Page - 1))
+                .Take(appointmentParameters.PageCount);
+            return Mapper.Map<IEnumerable<AppointmentsClientDto>>(appointmentsPaging);
         }
 
         public AppointmentsClient GetAppointment(Guid appointmentId)
